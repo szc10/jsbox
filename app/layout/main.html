@@ -1,0 +1,214 @@
+<style>
+    header {
+        background-color: rgb(244, 180, 0);
+        padding-top: 40px;
+        height: 48px;
+        padding-left: 20px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+    }
+
+    .header-title {
+        color: #f6f6f6;
+        float: left;
+        font-weight: bold;
+        font-size: 1.3rem;
+        margin-left: 25px;
+        line-height: 2;
+    }
+
+    .category {
+        width: 35px;
+        height: 35px;
+        float: left;
+        border-radius: 50%;
+    }
+    /*.category:active{*/
+    /*background: rgba(240,240,240,0.2);*/
+    /*}*/
+
+    .category img {
+        width: 20px;
+        height: 20px;
+        position: relative;
+        margin-top: 7.5px;
+        margin-left: 7.5px;
+    }
+
+    ._text-inf {
+        color: #676767;
+        padding-left: 22px;
+        padding-top: 16px;
+        padding-bottom: 15px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+        font-weight: bold;
+    }
+
+    .mask {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(80, 80, 80, 0.5);
+        top: 0;
+        display: none;
+    }
+
+    .slide {
+        position: absolute;
+        width: 300px;
+        height: 100%;
+        background-color: #f6f6f6;
+        top: 0;
+        display: none;
+        overflow: scroll;
+    }
+
+    .slide .ooo {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(to bottom, #11b4ff, #82f5ff);
+    }
+</style>
+
+<context>
+
+    <header>
+        <icon class="category" data-action="ok">
+            <img src="icon/category.svg">
+        </icon>
+        <span class="header-title">
+            我的网盘
+        </span>
+    </header>
+    <div class="_text-inf">
+        文本文件
+    </div>
+
+    <div class="new">
+        <style>
+            .new li div {
+                position: relative;
+                /*float: left;*/
+                display: inline-block;
+            }
+
+            .new li img {
+                width: 100px;
+            }
+
+            .article-info-box {
+                width: 200px;
+                padding-left: 20px;
+                color: #4a4a4a;
+            }
+
+            .article-info-box div {
+                top: -20px;
+            }
+
+            .new li {
+                border-bottom: solid 1px rgb(240, 240, 240);
+                /*width: 100%;*/
+                padding-left: 20px;
+            }
+        </style>
+        <ul>
+            <li>
+                <div class="article-md-img-box" data-action="right-from">
+                    <img class="lazy" data-original="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg" src="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg"
+                        style="display: inline;">
+                </div>
+                <div class="article-info-box" data-action="right-from">
+                    <div class="article-md-title">2016年131房企跻身“百亿军团”恒大、万科“越大越快“</div>
+                </div>
+            </li>
+
+            <li>
+                <div class="article-md-img-box" data-action="right-from">
+                    <img class="lazy" data-original="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg" src="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg"
+                        style="display: inline;">
+                </div>
+                <div class="article-info-box" data-action="right-from">
+                    <div class="article-md-title">2016年131房企跻身“百亿军团”恒大、万科“越大越快“</div>
+                </div>
+            </li>
+
+            <li>
+                <div class="article-md-img-box" data-action="right-from">
+                    <img class="lazy" data-original="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg" src="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg"
+                        style="display: inline;">
+                </div>
+                <div class="article-info-box" data-action="right-from">
+                    <div class="article-md-title">2016年131房企跻身“百亿军团”恒大、万科“越大越快“</div>
+                </div>
+            </li>
+
+            <li>
+                <div class="article-md-img-box" data-action="right-from">
+                    <img class="lazy" data-original="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg" src="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg"
+                        style="display: inline;">
+                </div>
+                <div class="article-info-box" data-action="right-from">
+                    <div class="article-md-title">2016年131房企跻身“百亿军团”恒大、万科“越大越快“</div>
+                </div>
+            </li>
+
+            <li>
+                <div class="article-md-img-box" data-action="right-from">
+                    <img class="lazy" data-original="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg" src="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg"
+                        style="display: inline;">
+                </div>
+                <div class="article-info-box" data-action="right-from">
+                    <div class="article-md-title">2016年131房企跻身“百亿军团”恒大、万科“越大越快“</div>
+                </div>
+            </li>
+
+            <li>
+                <div class="article-md-img-box" data-action="right-from">
+                    <img class="lazy" data-original="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg" src="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg"
+                        style="display: inline;">
+                </div>
+                <div class="article-info-box" data-action="right-from">
+                    <div class="article-md-title">2016年131房企跻身“百亿军团”恒大、万科“越大越快“</div>
+                </div>
+            </li>
+
+            <li>
+                <div class="article-md-img-box" data-action="right-from">
+                    <img class="lazy" data-original="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg" src="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg"
+                        style="display: inline;">
+                </div>
+                <div class="article-info-box" data-action="right-from">
+                    <div class="article-md-title">2016年131房企跻身“百亿军团”恒大、万科“越大越快“</div>
+                </div>
+            </li>
+
+            <li>
+                <div class="article-md-img-box" data-action="right-from">
+                    <img class="lazy" data-original="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg" src="https://imgs.bipush.com/article/cover/201701/02/192405138125.jpg?imageView2/1/w/522/h/392/|imageMogr2/strip/interlace/1/quality/85/format/jpg"
+                        style="display: inline;">
+                </div>
+                <div class="article-info-box" data-action="right-from">
+                    <div class="article-md-title">2016年131房企跻身“百亿军团”恒大、万科“越大越快“</div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+    <!--<div style="font-size: 2rem">从下面弹出</div>-->
+    <!--<div style="font-size: 2rem" data-action="right-from">从右边弹出</div>-->
+
+    <div class="mask" name="mask" data-action="close-slide">
+
+
+
+    </div>
+    <div class="slide" name="slide" style="font-size: 2rem">
+        <div class="ooo">
+
+        </div>
+        <ul>
+            <li data-action="buttom-from">发表评论</li>
+        </ul>
+    </div>
+</context>

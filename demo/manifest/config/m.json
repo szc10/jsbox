@@ -1,0 +1,17 @@
+﻿{
+  "name": "测试应用",
+  "version": "1.0.0",
+  "description": "this is a test",
+  "author": "szc",
+  "activity": [
+    {
+      "name": "main",
+      "layout": "layout/main.html",
+      "script": "layout/main.js",
+      "css": "layout/main.css"
+    }
+   ]
+}
+
+
+

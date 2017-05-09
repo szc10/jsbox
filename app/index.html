@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="render" content="webkit"/>
+    <title></title>
+    <link rel="stylesheet" href="../libs/css/cssBox.css">
+</head>
+
+<body>
+<viewport>
+
+</viewport>
+</body>
+
+
+<script src="../libs/js/jsBox.js"></script>
+<script src="../libs/js/m.js"></script>
+<script src="../libs/js/load.js"></script>
+<script>
+
+APP.loadManifest(null,"config/m.json").then(function(){
+    APP.loadJActivity(null,'main','main',null).init().activite();
+});
+</script>
+</html>

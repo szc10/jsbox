@@ -1,0 +1,20 @@
+<html>
+<body>
+<form action="http://192.168.1.179:6677/test" method="post" enctype="multipart/form-data">
+    <input type="file" name="ya">
+    <input type="submit" value="提交">
+</form>
+</body>
+<script src="libs/js/jsBox.js"></script>
+<script>
+
+    Jajax({
+        url:"http://192.168.1.179:6677/test",
+        data:{},
+        complete:function(data){
+             console.log(data);
+        }
+    });
+
+</script>
+</html>

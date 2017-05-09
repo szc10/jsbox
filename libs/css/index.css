@@ -1,0 +1,326 @@
+﻿/*自定义字体*/
+@font-face {
+    /*font-family: sanFran;*/
+    /*src:url("../fonts/San_Francisco.ttf");*/
+
+    font-family: 'San_Francisco';
+    src: url('../fonts/PingHei-text.woff');
+}
+@font-face {
+    /*font-family: sanFran;*/
+    /*src:url("../fonts/San_Francisco.ttf");*/
+
+    font-family: 'android';
+    src: url('../fonts/android-l.woff2');
+}
+
+
+*{
+    /*font-family:sanFran;*/
+    font-family: "San_Francisco";
+    /*font-family: "幼圆";*/
+    /*font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;*/
+    font-size:1.3rem;
+}
+/*页面头部*/
+.main header{
+    height:50px;
+    color:#4A4A4A;
+    background-color: white;
+    box-shadow: 0 1.4px 2.8px 0 rgba(0,0,0,0.18);
+}
+/*页面头部的左边文字*/
+.main header .header-left{
+    height:50px;
+    line-height: 50px;
+    padding-left:25px;
+}
+/*chanege 0819 yal 中间的导航文字已和二级导航文字样式合并*/
+/*导航条--一级、二级通用--*/
+/*ul*/
+.main .nav-header{
+    width:100%;
+    text-align:center;
+    list-style-type:none;
+    background-color: #F6F6F6;
+}
+/*ul--li*/
+.main .nav-header li{
+    height:50px;
+    line-height: 50px;
+    padding-left:20px;
+    padding-right:20px;
+    display:inline-block;
+    color:#4A4A4A;
+}
+/*一级导航的位置*/
+.main .first-nav{
+    width:40%;
+    background-color: white;
+    position:absolute;
+    left:30%;
+    top:0px;
+}
+/*通用中间文字选中时的样式，无背景颜色*/
+.main .nav-header li.active{
+    color:#1EAAF1;
+}
+/*一级中间文字选中时的样式*/
+.main .first-nav li.active{
+    background-color: #F6F6F6;
+    color:#1EAAF1;
+}
+/*导航文字鼠标经过时的样式*/
+.main .nav-header li:hover{
+    color:#1EAAF1;
+    cursor:pointer;
+}
+/*end--nav*/
+
+/*头部右边块*/
+/*“课堂”前的图标*/
+.main header .header-lesson:before{
+    content:"";
+    height:24px;
+    width:24px;
+    margin-top:13px;
+    background-image: url("../../libs/res/img/header-help.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    margin-right:5px;
+}
+/*“课堂”两字*/
+.main header .header-lesson{
+    height:50px;
+    line-height: 51px;
+    position: absolute;
+    right:225px;
+    top:0px;
+    color:#9B9B9B;
+    display:inline-flex;
+    cursor: pointer;
+    font-size:1.15rem;
+}
+/*“消息”前的图标*/
+.main header .header-message:before{
+    content:'';
+    height:24px;
+    width:24px;
+    margin-top:13px;
+    background-image: url("../../libs/res/img/header_message.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    margin-right:5px;
+}
+/*“消息”两字*/
+.main header .header-message{
+    height:50px;
+    line-height: 51px;
+    position: absolute;
+    right:140px;
+    color:#9B9B9B;
+    display: inline-flex;
+    cursor: pointer;
+    font-size: 1.15rem;
+}
+/*最右边两个图标的共用样式*/
+.main header .header-icon{
+    height:32px;
+    width:32px;
+    margin-top:9px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    cursor: pointer;
+}
+/*加号图标*/
+.main header .header-plus{
+    background-image: url("../../libs/res/img/header-add.png");
+    right:80px;
+}
+/*用户头像图标*/
+.main header .header-user{
+    background-image: url("../../libs/res/img/32-01.png");
+    right:20px;
+}
+/*header下剩余的页面*/
+.main #first_panel{
+    height:calc(100% - 52px);
+    margin-top: 2px;
+}
+/*.first-fun-panel{
+    height: 100%;
+}*/
+
+/*0819不确定--主面板颜色？？？？*/
+/*一条导航下的context*/
+.main .first-fun-panel .second-context{
+    height:100%;
+    background-color: #eeeeee;
+}
+
+/*0820两条导航下的context*/
+.main .first-fun-panel .third-context{
+    height:calc(100% - 50px);
+    overflow-x: hidden;
+    /*background: #000;*/
+}
+
+/*0825 yql  自定义select样式*/
+select{
+    /*border: solid 1px #ccc;*/
+    appearance: none;/*清除select下拉框默认样式*/
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    padding-right: 20px;/*为下拉小箭头留出一点位置，避免被文字覆盖*/
+    background: url("../../libs/res/img/select.png") no-repeat scroll right center transparent;/*自定义图片覆盖原有的下三角符号*/
+    /*background-repeat: no-repeat;*/
+    background-size: contain;
+}
+select::-ms-expand {
+    display: none;/*清除IE默认下拉按钮，但是测试发现IE10以上有效，IE8，9默认下拉按钮仍旧存在*/
+}
+/*
+*加号下方的详情内容 by zhudan
+ */
+
+.main header .header-user .header-center{
+    position: absolute;
+    width: 200px;
+    height: 308px;
+    background-color: #fff;
+    top: 42px;
+    right: -20px;
+    z-index: 1000;
+    box-shadow: -2px 2px 2px rgba(0,0,0,.2);
+    display:none;
+}
+.main header .header-user .header-center ul .block-head{
+    width: 100%;
+    height: 107px;
+    border-bottom: 1px solid #d4d4d4;
+    text-align: center;
+}
+
+.main header .header-user .header-center ul .block-item{
+    height: 49px;
+}
+.main header .header-user .header-center ul .block-item + .block-item{
+  border-top: 1px solid #d4d4d4;
+}
+.main header .header-user .header-center ul .block-head > img{
+    width: 60px;
+    height: 60px;
+    margin-top: 10px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+}
+.main header .header-user .header-center ul .block-head > p{
+    font-size: 15px;
+}
+.main header .header-user .header-center ul .block-item .block-item-cont{
+    font-size: 14px;
+    display: inline-block;
+    width: 90%;
+    margin: 10px 5% 0px 5%;
+}
+.main header .header-user .header-center ul .block-item .block-item-cont > a{
+     font-size: 14px;
+}
+.block-item-blue{
+    color: #1EAAF1;
+}
+.main header .header-user .header-center ul .block-item .block-link{
+    line-height: 49px;
+    margin-left: 5%;
+    color: #4A4A4A;
+    font-size: 16px;
+}
+
+
+/*11-24-- 企业拆分后的导航栏*/
+.nav-header{
+    width:100%;
+    text-align:center;
+    list-style-type:none;
+    background-color: #F6F6F6;
+}
+/*ul--li*/
+.nav-header li{
+    height:50px;
+    line-height: 50px;
+    padding-left:20px;
+    padding-right:20px;
+    display:inline-block;
+    color:#4A4A4A;
+}
+/*通用中间文字选中时的样式，无背景颜色*/
+.nav-header li.active{
+    color:#1EAAF1;
+}
+/*导航文字鼠标经过时的样式*/
+.nav-header li:hover{
+    color:#1EAAF1;
+    cursor:pointer;
+}
+
+/*!*1124*!*/
+/*.my-company{*/
+     /*position: relative;*/
+     /*top:51px;*/
+     /*height:calc(100% - 51px);*/
+    /*overflow-x: hidden;*/
+ /*}*/
+.my-company .company-context-div{
+    height:100%;
+}
+
+
+/*11-30yql*/
+.main header .title-logo{
+    background-image: url(../../main/firstPageImg/logo2.png);
+    height: 32px;
+    margin-top:13px;
+    width: 85px;
+    /*background-size: 150% 100%;*/
+    background-size: contain;
+
+    -moz-background-size: contain;
+    -o-background-size: contain;
+
+    background-repeat: no-repeat;
+    margin-left: 20px;
+    display: inline-block;
+}
+.main header .title-logo-text{
+    font-size: 12px;
+    color: #72807b;
+    position: relative;
+    top:-4px;
+
+    letter-spacing: 2px;
+}
+
+
+/*!*input框选中时框边框变蓝色1208 by yql*!*/
+input:focus{
+    border:1px solid #1EAAF1 !important;
+}
+
+
+/*1212 yql hover出现下面的帐号信息；下面的列表鼠标hover出现浅色背景色；  js也需要改*/
+.main header .header-user{
+    height:50px;
+}
+#my-person-center:hover #my-center-list{
+    display: block;
+}
+#my-center-list:hover{
+    display: block;
+}
+#my-center-list ul li:hover{
+    background-color:#f6f6f6;
+}

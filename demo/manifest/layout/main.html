@@ -1,0 +1,52 @@
+<context>
+    <header>
+        <icon class="category" data-action="ok">
+            <img src="icon/category.svg">
+        </icon>
+        <span class="header-title">
+            模板的使用
+        </span>
+    </header>
+    <div class="_text-inf" data-action="update">
+        更新当前模板的数据
+    </div>
+
+    <div class="new" name="context">
+
+    </div>
+</context>
+
+<template data-name="context_list">
+    <ul>
+        {{ for(var k in data.str) {  var title = data.str[k]; }}
+        <li>
+            <div class="article-md-img-box" data-action="right-from">
+                <img class="lazy"  src="img/img.jpg"
+                     style="display: inline;">
+            </div>
+            <div class="article-info-box" data-action="right-from">
+                <div class="article-md-title">{{=title}}</div>
+            </div>
+        </li>
+        {{ } }}
+        </ul>
+</template>
+
+<!--使用内置的数据,和相关的方法,可以使用自定义方法-->
+<template data-name="up_context_list">
+    <ul>
+        {{ console.log(data); }}
+        {{ for(var k in data.str) {  var one = data.str[k]; }}
+        <li>
+            <div class="article-md-img-box" data-action="right-from">
+                <img class="lazy"  src="img/img.jpg"
+                     style="display: inline;">
+            </div>
+            <div class="article-info-box" data-action="right-from">
+                <div class="article-md-title">{{=method.changeText(one)}}</div>
+            </div>
+        </li>
+        {{ } }}
+    </ul>
+</template>
+
