@@ -240,7 +240,7 @@ var J = function(ele) {
         try {
             if (!document.getElementById(ele)) throw ele + " is not find";
             this.thisp = document.getElementById(ele);
-            J_object[ele] = this;
+            //J_object[ele] = this;
             //return this;
         } catch (err) {
             console.log(err);
@@ -312,7 +312,7 @@ J.prototype = {
     positeDom: function(position_dom) {
         positeDom(position_dom, this.thisp);
     },
-    hide:function(){
+    hide: function() {
         this.addClass('_hide');
     }
 }
@@ -558,8 +558,9 @@ var Jtmpl = function(tmpl) {
     //用p.push('')组织代码包裹起来
     dealHtml = "var p=[];p.push('" + dealHtml + "'); return p.join(''); ";
     dealHtml = dealHtml.replace(/[\r\t\n]/g, "");
+    dealHtml = dealHtml.replace(/&lt;/g, "<");
 
-    //console.log(dealHtml);
+    // console.log(dealHtml);
     try {
         var fn = new Function('data', dealHtml);
     } catch (e) {
@@ -653,9 +654,9 @@ Action = (function() {
         //
         // });
 
-        var listener =  document.getElementsByTagName('viewport')[0] || document;
+        var listener = document.getElementsByTagName('viewport')[0] || document;
 
-        listener.addEventListener(eventType,function(ev){
+        listener.addEventListener(eventType, function(ev) {
             var target = ev.target;
             var id = target.id;
             var type = ev.type;
@@ -666,6 +667,9 @@ Action = (function() {
             for (var i = 0; i < actionArr.length; i++) {
                 dealAction.call(target, type, actionArr[i]);
             }
+            // console.log(domAction[type]['test']);
+
+
 
             function dealAction(type, action) {
                 if (domAction[type][action]) {
@@ -783,7 +787,7 @@ var URLrouter = (function() {
             delete hash[hashKey];
             reflashURL();
         },
-        getHash:function(key){
+        getHash: function(key) {
             return hash[key];
         },
         /**
@@ -844,12 +848,12 @@ function Transition(dom) {
             return this;
         },
         getDisplay: function() {
-            J(dom).setcss('display','block');
+            J(dom).setcss('display', 'block');
             J(dom).getcss("display");
             return this;
         },
-        setTimefunction:function(con){
-            if(con instanceof Object ) {
+        setTimefunction: function(con) {
+            if (con instanceof Object) {
                 var x1 = con.x1 || 0;
                 var x2 = con.x2 || 0;
                 var y1 = con.y1 || 0;

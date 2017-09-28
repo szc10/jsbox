@@ -3,45 +3,44 @@
  * @param {[type]} dom        [description]
  * @param {[type]} actionType [description]
  */
-ActionSlots = function(dom, actionType,point) {
+ActionSlots = function (dom, actionType, point) {
 
     var domAction = [];
     var listener = dom;
     var eventType = actionType;
     var thisp = this;
-
-    AddEvent(listener, eventType, function(ev) {
+    AddEvent(listener, eventType, function (ev) {
         var target = thisp.getDomTarget(ev.target);
         var actionArr = thisp.getDomActionArr(target);
 
         for (var i = 0; i < actionArr.length; i++) {
-            dealAction.call(target, actionArr[i],target);
+            dealAction.call(target, actionArr[i], target);
         }
     });
 
-    function dealAction(action,target) {
+    function dealAction(action, target) {
         if (domAction[action]) {
-            domAction[action].call(point,target);
+            domAction[action].call(point, target);
         } else {
             return;
         }
     }
 
-    this.addEvent = function(action, fn) {
+    this.addEvent = function (action, fn) {
         domAction[action] = fn;
     };
 }
 
-ActionSlots.prototype.getDomTarget = function(dom) {
+ActionSlots.prototype.getDomTarget = function (dom) {
     var target = dom;
-    if (target.dataset.action || (target.nodeName == "CONTEXT" || target.nodeName == "BODY")) {
+    if (target.dataset.action || (target.nodeName == "CONTEXT" || target.nodeName == "BODY" || target.nodeName == "UIACTIVITY")) {
         return target;
     } else {
         return this.getDomTarget(target.parentNode);
     }
 };
 
-ActionSlots.prototype.getDomActionArr = function(target) {
+ActionSlots.prototype.getDomActionArr = function (target) {
     if (target.dataset.action) {
         return target.dataset.action.split(" ");
     } else {
@@ -50,9 +49,9 @@ ActionSlots.prototype.getDomActionArr = function(target) {
 }
 
 
-var JTemplate = function(_OB) {
-    var target = this.loadTar =_OB.target;
-    var method = _OB.method ||[];
+var JTemplate = function (_OB) {
+    var target = this.loadTar = _OB.target;
+    var method = _OB.method || [];
     var data = _OB.data || [];
     var tmpl = new Jtmpl(_OB.html);
     var point = document.createElement('uitemplate');
@@ -60,14 +59,18 @@ var JTemplate = function(_OB) {
     for (var k in method) {
         this[k] = method[k];
     }
-    this._setData = function(key, _data) {
+    this._setData = function (key, _data) {
+
+        // var data = {};
         data[key] = _data;
+        // console.log(data);
     };
-    this._start = function() {
+    this._start = function () {
+     
         var html = tmpl.getFunction().call(this, data, method);
         point.innerHTML = html;
     };
-    this._sleep = function() {
+    this._sleep = function () {
         point.style.display = "none";
     };
     this._activite = function () {
@@ -77,38 +80,38 @@ var JTemplate = function(_OB) {
 };
 
 JTemplate.prototype = {
-    start: function(key, data) {
+    start: function (key, data) {
         if (key && data)
             this._setData(key, data);
         this._start();
         this._activite();
         return this;
     },
-    setData: function(key, data) {
+    setData: function (key, data) {
         if (key && data)
             this._setData(key, data);
         this._start();
         return this;
     },
-    activite:function(){
-       this._activite();
+    activite: function () {
+        this._activite();
         return this;
     },
-    sleep: function() {
+    sleep: function () {
         this._sleep();
         return this;
     },
-    getContext: function() {
+    getContext: function () {
         return this._context;
     },
-    destroy : function(){
-    this.loadTar.removeChild(this._context);
-   }
+    destroy: function () {
+        this.loadTar.removeChild(this._context);
+    }
 };
 
 
 
-var JActivity = function(config) {
+var JActivity = function (config) {
     this.config = config;
     this.action = config.config;
     this.context = null;
@@ -125,11 +128,25 @@ var JActivity = function(config) {
      * @return {[type]} [description]
      */
     this.plugInit = new Function("");
-    this._init = function() {
-        var uiactivity = document.createElement('uiactivity');
 
+    for (var k in this.action) {
+        if (isloadFn(k)) {
+            this[k] = this.action[k];
+        }
+    }
+    function isloadFn(action) {
+        var checkFnArr = ["init", "activite", "sleep", "destroy", "name", "type"];
+        for (var k in checkFnArr) {
+            if (action == checkFnArr[k])
+                return false;
+        }
+        return true;
+    }
+
+    this._init = function () {
+        var uiactivity = document.createElement('uiactivity');
         this.config.loadTarget.appendChild(uiactivity);
-        uiactivity.innerHTML = this.config.layout.data;
+        uiactivity.innerHTML = this.config.layout.data || this.action.layout.text;
         this.config.layout.point = uiactivity;
         this.context = this.getContext();
         if (this._preInit) {
@@ -144,8 +161,9 @@ var JActivity = function(config) {
      * 唤醒的时候的系统函数
      * @private
      */
-    this._activite = function() {
-        this.context.style.display = "block";
+    this._activite = function () {
+        this.config.layout.point.style.display = "block";
+
         if (this.action.activite) {
             this.action.activite.apply(this, arguments);
         }
@@ -155,18 +173,18 @@ var JActivity = function(config) {
      * 睡眠的时候的系统函数
      * @private
      */
-    this._sleep = function() {
+    this._sleep = function () {
         if (this.action.sleep) {
             this.action.sleep.apply(this, arguments);
         }
-        this.context.style.display = "none";
+        this.config.layout.point.style.display = "none";
 
     }
     /**
      * 销毁的时候的系统函数
      * @private
      */
-    this._destroy = function() {
+    this._destroy = function () {
         if (this.action.destroy) {
             this.action.destroy.apply(this, arguments);
         }
@@ -177,51 +195,51 @@ var JActivity = function(config) {
      * @param newState
      * @private
      */
-    this._updateState = function(newState) {
+    this._updateState = function (newState) {
         this.config.state = newState;
     }
     /**
      * 获取当前Activity的状态
      * @returns {*}
      */
-    this.getState = function() {
+    this.getState = function () {
         return this.config.state;
     }
 };
 
 JActivity.prototype = {
-    init: function() {
+    init: function () {
         var state = "paused";
         this._updateState(state);
         this._init.apply(this, arguments);
         return this;
     },
-    activite: function() {
+    activite: function () {
         var state = "active";
         this._updateState(state);
         this._activite.apply(this, arguments);
     },
-    sleep: function() {
+    sleep: function () {
         var state = "paused";
         this._updateState(state);
         this._sleep.apply(this, arguments);
     },
-    destroy: function() {
-        this._destroy.apply(this,arguments);
+    destroy: function () {
+        this._destroy.apply(this, arguments);
     },
-    loadTemplate: function(name, target) {
+    loadTemplate: function (name, target) {
         var _ob = APP.clone(this.action.template[name]);
         _ob.target = target;
         try {
-            if (!this.config.layout.point.querySelector('template[data-name="' + name + '"]')) throw "act-name:" + name + " is not find";
-            _ob.html = this.config.layout.point.querySelector('template[data-name="' + name + '"]').innerHTML;
+            if (!this.config.layout.point.querySelector('script[data-name="' + name + '"]')) throw "act-name:" + name + " is not find";
+            _ob.html = this.config.layout.point.querySelector('script[data-name="' + name + '"]').innerHTML;
         } catch (err) {
             console.log(err);
         }
 
         return new JTemplate(_ob);
     },
-    findDom: function(name) {
+    findDom: function (name) {
         try {
             if (!this.context.querySelector('*[name="' + name + '"]')) throw "name:" + name + " is not find";
             return this.context.querySelector('*[name="' + name + '"]');
@@ -234,19 +252,19 @@ JActivity.prototype = {
      * 获取ui中的布局正文
      * @returns {*}
      */
-    getContext: function() {
+    getContext: function () {
         var dom = this.config.layout.point;
         for (var i = 0; i < dom.childNodes.length; i++) {
             if (dom.childNodes[i].nodeName == "CONTEXT")
                 return dom.childNodes[i];
-        }
+        } return this.config.layout.point;
     },
     /**
      * 获取ui中的模板文件
      * @param name
      * @returns {*}
      */
-    getTemplate: function() {
+    getTemplate: function () {
         var dom = this.config.layout.point;
         var templateArr = [];
         for (var i = 0; i < dom.childNodes.length; i++) {
@@ -267,15 +285,46 @@ JActivity.prototype = {
      * @param type
      * @returns {*|JActivity}
      */
-    loadActivity: function(modname, runname, targetLoadDom, type) {
+    loadActivity: function (modname, runname, targetLoadDom, type) {
         return APP.loadJActivity(this, modname, runname, targetLoadDom, type);
     },
-    addEvent: function(actionType, actionName, fn) {
+    addEvent: function (actionType, actionName, fn) {
         if (this.actionArr[actionType]) {
             this.actionArr[actionType].addEvent(actionName, fn);
         } else {
-            this.actionArr[actionType] = new ActionSlots(this.getContext(), actionType,this);
+            this.actionArr[actionType] = new ActionSlots(this.getContext(), actionType, this);
             this.actionArr[actionType].addEvent(actionName, fn);
         }
+    }
+}
+
+/**
+ * 选择弹窗
+ * @param {*} title 
+ * @param {*} okFn 
+ * @param {*} errFn 
+ */
+function ConfirmAlert(title, okFn, errFn) {
+    //  var content = document.getElementById('test');
+    var content = document.createElement('div');
+    content.className = "_maskUI confirm-alert";
+    content.innerHTML = '<div class="_maskUI-msg"><h3></h3><ul><li class="_canle">取消</li><li class="_ok">确定</li></ul></div>';
+    document.body.appendChild(content);
+    var okBtn = content.getElementsByClassName('_ok')[0];
+    var canleBtn = content.getElementsByClassName("_canle")[0];
+    var titleH3 = content.getElementsByTagName("H3")[0];
+    titleH3.innerHTML = title;
+
+    J(okBtn).click(function () {
+        !(okFn) || okFn();
+        close();
+    });
+
+    J(canleBtn).click(function () {
+        !(errFn) || errFn();
+        close();
+    });
+    function close() {
+        document.body.removeChild(content);
     }
 }

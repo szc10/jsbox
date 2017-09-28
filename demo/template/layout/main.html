@@ -18,7 +18,7 @@
 
 <template data-name="context_list">
     <ul>
-        {{ for(var k in data.str) {  var title = data.str[k]; }}
+        {{ for(var k = 0;k<data.str.length;k++) {  var title = data.str[k]; }}
         <li>
             <div class="article-md-img-box" data-action="right-from">
                 <img class="lazy"  src="img/img.jpg"

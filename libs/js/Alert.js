@@ -1,42 +1,46 @@
     /**
      * Created by szc on 16/9/11.
      */
-    var AlertDel = (function () {
+    var AlertDel = (function() {
 
         var body = document.getElementsByTagName('body')[0];
         var Alert = document.createElement('div');
+        J(Alert).click(function() {
+            disappear();
+        });
         Alert.id = "Alert";
 
-var str = ' <style>'+
-        '        #Alert {'+
-        '        width: 100%;'+
-        '        height: 100%;'+
-        '        display: none;'+
-        '        z-index: 99;'+
-        '        position: absolute;'+
-        '    }'+
-        '    .context {'+
-        '        margin: 0 auto;'+
-        '        top: 40%;'+
-        '        position: relative;'+
-        '        will-change: transform;'+
-        '        transition: all .5s ease-out;'+
-        '        padding-top: 85px;'+
-        '        padding-bottom: 15px;'+
-        '        background: no-repeat center 15px;'+
-        '        background-size: 22%;'+
-        '        text-align: center;'+
-        '        font-size: 14px !important;'+
-        '        border: solid 1px #f3f3f3;'+
-        '        width: 250px;'+
-        '        color: rgb(150,150,150);'+
-        '        box-shadow: 0 2px 4px rgba(0,0,0,0.15);'+
-        '        background-color:#FFF;'+
-        '    }'+
-        '    </style>'+
-        '    <div id="context" style="opacity: 1;" class="context">'+
-        '        alert'+
-        '    </div>';
+        var str = ' <style>' +
+            '        #Alert {' +
+            '        width: 100%;' +
+            '        height: 100%;' +
+            '        display: none;' +
+            '        z-index: 99;' +
+            '        position: absolute;' +
+            '        top: 0;' +
+            '    }' +
+            '    .context {' +
+            '        margin: 0 auto;' +
+            '        top: 40%;' +
+            '        position: relative;' +
+            '        will-change: transform;' +
+            '        transition: all .5s ease-out;' +
+            '        padding-top: 85px;' +
+            '        padding-bottom: 15px;' +
+            '        background: no-repeat center 25px;' +
+            '        background-size: 15%;' +
+            '        text-align: center;' +
+            '        font-size: 14px !important;' +
+            '        border: solid 1px #f3f3f3;' +
+            '        width: 250px;' +
+            '        color: rgb(150,150,150);' +
+            '        box-shadow: 0 2px 4px rgba(0,0,0,0.15);' +
+            '        background-color:#FFF;' +
+            '    }' +
+            '    </style>' +
+            '    <div id="context" style="opacity: 1;" class="context">' +
+            '        alert' +
+            '    </div>';
 
         /**
          * 添加布局文件
@@ -49,8 +53,8 @@ var str = ' <style>'+
 
         var iconArr = [];
         var _url = "http://115.28.213.102/icon/";
-        iconArr['_true'] = _url + 'true.png';
-        iconArr['_false'] = _url + "false.png";
+        iconArr['_true'] = "icon/deal/ok.svg";
+        iconArr['_false'] = "icon/deal/error.svg";
         iconArr['_deal'] = _url + "loading.gif";
 
         /**
@@ -70,8 +74,8 @@ var str = ' <style>'+
          * 更换弹框的上面的图标
          *
          **/
-        function displayIcon(type){
-           context.style['background-image'] = "url("+iconArr[type]+")";
+        function displayIcon(type) {
+            context.style['background-image'] = "url(" + iconArr[type] + ")";
         }
 
         /**
@@ -91,7 +95,7 @@ var str = ' <style>'+
         function delayDisappear(htmlStr, callback) {
             display(htmlStr);
             callBack = callback;
-            setTimeout(function () {
+            setTimeout(function() {
                 disappear();
             }, 2500);
         }
@@ -102,7 +106,7 @@ var str = ' <style>'+
          * @param  {[type]} false [description]
          * @return {[type]}       [description]
          */
-        context.addEventListener('webkitTransitionEnd', function () {
+        context.addEventListener('webkitTransitionEnd', function() {
             //显示完成后的回调函数
             if (context.style.opacity == 1) {
                 console.log("display");
@@ -125,14 +129,14 @@ var str = ' <style>'+
              * 显示一个消息
              * @param htmlStr
              */
-            display: function (htmlStr) {
+            display: function(htmlStr) {
                 display(htmlStr);
             },
             /**
              * Alert.disappear();
              * 让一个消息显示以后消失
              */
-            disappear: function () {
+            disappear: function() {
                 disappear();
             },
             /**
@@ -141,7 +145,7 @@ var str = ' <style>'+
              * @param htmlStr
              * @param fn
              */
-            delayDisappear: function (htmlStr, fn) {
+            delayDisappear: function(htmlStr, fn) {
                 delayDisappear(htmlStr, fn);
             },
             /**
@@ -150,7 +154,7 @@ var str = ' <style>'+
              * @param htmlStr
              * @param fn
              */
-            correctState: function (htmlStr, fn) {
+            correctState: function(htmlStr, fn) {
                 displayIcon('_true');
                 delayDisappear(htmlStr, fn);
             },
@@ -160,7 +164,7 @@ var str = ' <style>'+
              * @param htmlStr
              * @param fn
              */
-            errorState: function (htmlStr, fn) {
+            errorState: function(htmlStr, fn) {
                 displayIcon('_false');
                 delayDisappear(htmlStr, fn);
             },
@@ -169,9 +173,21 @@ var str = ' <style>'+
              * 显示一个正在处理中的消息
              * @param htmlStr
              */
-            dealState: function (htmlStr) {
+            dealState: function(htmlStr) {
                 displayIcon('_deal');
                 display(htmlStr);
             }
         }
     }());
+
+
+    function inf_notify(str) {
+        // if (window.alert) {
+        //     alert(str);
+        // }
+        AlertDel.errorState(str);
+    }
+
+    
+
+

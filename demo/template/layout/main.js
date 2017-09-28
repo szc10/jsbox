@@ -6,12 +6,17 @@ APP.define({
         var context_list = this.findDom("context");
         var template = this.loadTemplate("context_list", context_list);
 
-        var arr = {
-            a: "oatitle",
-            b: "obitle",
-            c: "octitle",
-            d: "odtitle"
-        };
+        // var arr = {
+        //     : "oatitle",
+        //     b: "obitle",
+        //     c: "octitle",
+        //     d: "odtitle"
+        // };
+
+
+var arr = [1,2,3,4];
+
+
         template.start("str", arr);
 
         //

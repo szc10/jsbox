@@ -5,14 +5,15 @@ var head = document.getElementsByTagName("head")[0];
  * @return {[type]}     [description]
  */
 function loadText(url) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         Jajax({
             url: url,
             type: "get",
-            complete: function(data) {
+            complete: function (data) {
                 resolve(data);
+                // console.log(data);
             },
-            error: function() {
+            error: function () {
                 console.log(url + " is not exist");
                 reject(url + " is not exist");
             }
@@ -20,11 +21,56 @@ function loadText(url) {
     });
 }
 
+/**
+ * 解析xml文档
+ * @param {*} text 
+ */
+function loadXml(text) {
+    return new DOMParser().parseFromString(text, 'text/xml');
+}
+
+
+/**
+ * 加载当前的layout文件
+ * @param {*} url 
+ */
+function loadLayout(url) {
+    // 当前的测试用例
+    return loadText(url).then(function (data) {
+
+        var xmlRoot = loadXml(data).documentElement;  //获取根元素
+        var childNode = xmlRoot.childNodes;
+
+        var layoutOb = (xmlRoot.id) ? (function () {
+            appInf.layout[xmlRoot.id] = {};
+            return appInf.layout[xmlRoot.id];
+        })() : appInf.layout;
+
+        for (var i = 0; i < childNode.length; i++) {
+            // console.log(childNode[i], childNode[i].innerHTML, childNode[i].nodeType, childNode[i].nodeName, childNode[i].id);
+            if (childNode[i].nodeType != 3 && childNode[i].id) {
+                layoutOb[childNode[i].id] = {
+                    nodeName: childNode[i].nodeName,
+                    text: childNode[i].innerHTML,
+                }
+            }
+        }
+        return Promise.resolve();
+    });
+}
+
+
+
+
+/**
+ * 加载javascript脚本
+ * @param {*} url 
+ */
 function loadScript(url) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         var script = document.createElement("script");
         script.src = url;
-        script.onload = function() {
+        script.onload = function () {
             resolve();
         }
         head.appendChild(script);
@@ -37,52 +83,53 @@ function loadScript(url) {
  * @return {[type]}        [description]
  */
 function loadScriptArr(urlArr) {
-  if(urlArr){
-    var length = urlArr.length;
-    return new Promise(function(resolve, reject) {
-        _loadScript(0)
+    if (urlArr) {
+        var length = urlArr.length;
+        return new Promise(function (resolve, reject) {
+            _loadScript(0)
 
-        function _loadScript(num) {
-            if (num < length) {
-                var url = urlArr[num];
-                loadScript(url).then(function() {
-                    num++;
-                    _loadScript(num);
-                });
-            } else {
-                resolve();
+            function _loadScript(num) {
+                if (num < length) {
+                    var url = urlArr[num];
+                    loadScript(url).then(function () {
+                        num++;
+                        _loadScript(num);
+                    });
+                } else {
+                    resolve();
+                }
             }
-        }
-    });
-  } else{
-    return Promise.resolve();
-  }
+        });
+    } else {
+        return Promise.resolve();
+    }
 }
 
 function loadCSS(url) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         var linkTag = document.createElement('link');
         linkTag.href = url;
         linkTag.setAttribute('rel', 'stylesheet');
         linkTag.setAttribute('type', 'text/css');
         head.appendChild(linkTag);
-        linkTag.onload = function() {
+        linkTag.onload = function () {
             resolve();
         }
     });
 }
 
 function loadCSSArr(urlArr) {
-  if(urlArr){
+    if (urlArr) {
 
-    var pArr = [];
-    for (var i = 1; i < urlArr.length; i++) {
-        pArr.push(loadCSS(urlArr[i]));
+        var pArr = [];
+        for (var i = 0; i < urlArr.length; i++) {
+            pArr.push(loadCSS(urlArr[i]));
+        }
+        // console.log(pArr);
+        return Promise.all(pArr);
+    } else {
+        return Promise.resolve();
     }
-    return Promise.all(pArr);
-  } else{
-    return Promise.resolve();
-  }
 
 }
 
@@ -95,7 +142,7 @@ function loadActivity(name) {
 
     if (activityInf.layout.url) {
         var promiseText = loadText(activityInf.layout.url);
-        promiseText.then(function(data) {
+        promiseText.then(function (data) {
             activityInf.layout.data = data;
         });
         promiseArr.push(promiseText);
@@ -103,14 +150,14 @@ function loadActivity(name) {
 
     if (activityInf.script) {
         var promiseScript = loadScript(activityInf.script);
-        promiseScript.then(function() {
+        promiseScript.then(function () {
 
         });
         promiseArr.push(promiseScript);
     }
     if (activityInf.css) {
         var promiseCSS = loadCSS(activityInf.css);
-        promiseCSS.then(function() {
+        promiseCSS.then(function () {
 
         });
         promiseArr.push(promiseScript);
@@ -119,10 +166,10 @@ function loadActivity(name) {
 }
 
 function preImgCache(url) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         var img = new Image();
         img.src = url;
-        img.onload = function() {
+        img.onload = function () {
             resolve();
         };
     });
@@ -143,16 +190,17 @@ function preImgCacheArr(urlArr) {
 
 
 
-var objectManager = APP = ((function() {
+var objectManager = APP = ((function () {
     appInf = [];
     appRunStack = {};
 
 
     appInf['activity'] = [];
+    appInf['layout'] = [];  // 布局文件
 
 
     return {
-        create: function(_class) {
+        create: function (_class) {
             var _object = {}
             _object.__proto__ = _class.prototype;
             _object.__proto__.constructor = _class;
@@ -161,27 +209,29 @@ var objectManager = APP = ((function() {
             _class.apply(_object, args);
             return _object;
         },
-        clone: function(object) {
-            function F() {}
+        clone: function (object) {
+            function F() { }
             F.prototype = object;
             return new F();
         },
-        storeActivtyConfig: function(config) {
+        storeActivtyConfig: function (config) {
 
             try {
                 if (!appInf["activity"][config.name]) throw config.name + " is not find";
                 appInf["activity"][config.name].config = config;
             } catch (err) {
-                console.log(err);
+                appInf["activity"][config.name] = {};
+                appInf["activity"][config.name].config = config;
+                // console.log(err);
             }
         },
-        getActivityInf: function(name) {
+        getActivityInf: function (name) {
             return appInf.activity[name];
         },
-        getRunActivityInf: function(name) {
+        getRunActivityInf: function (name) {
             return appRunStack[name];
         },
-        loadActivityArray: function(loadName) {
+        loadActivityArray: function (loadName) {
             var loadName = loadName;
             var pArr = [];
             for (var k in appInf[loadName]) {
@@ -189,7 +239,7 @@ var objectManager = APP = ((function() {
             }
             return Promise.all(pArr);
         },
-        getActivity: function(name) {
+        getActivity: function (name) {
             try {
                 if (!appRunStack[name]) throw new Error("The Activity named " + name + " is not runstack");
                 return appRunStack[name].point;
@@ -208,14 +258,14 @@ var objectManager = APP = ((function() {
          * @param type
          * @returns {Jtype|*}
          */
-        loadJActivity: function(transferActivity, modname, runname, targetLoadDom, type) {
+        loadJActivity: function (transferActivity, modname, runname, targetLoadDom, type) {
             var targetLoadDom = targetLoadDom || document.querySelector('viewport');
 
-            if(J(targetLoadDom).getcss("position")=="static") {
-                J(targetLoadDom).setcss("position","relative");
+            if (J(targetLoadDom).getcss("position") == "static") {
+                J(targetLoadDom).setcss("position", "relative");
             }
-
-            var Jtype = type || JActivity;
+            // console.log(appInf.activity[modname]);
+            var Jtype = appInf.activity[modname].config.type || JActivity;
             var activity = {};
             appRunStack[runname] = activity;
             activity.name = runname;
@@ -236,15 +286,15 @@ var objectManager = APP = ((function() {
          * @param type 加载活动的类型 可以为空 默认为JActivity
          * @returns {*|JActivity}
          */
-        loadGlobalJActivity:function(modname, runname, type){
-            return this.loadJActivity(null,modname,runname,null,type);
+        loadGlobalJActivity: function (modname, runname, type) {
+            return this.loadJActivity(null, modname, runname, null, type);
         },
         /**
          * [删除一个已经加载的activity的资源]
          * @param  {[type]} name [description]
          * @return {[type]}      [description]
          */
-        deleteJActivity: function(name) {
+        deleteJActivity: function (name) {
             var activity = appRunStack[name];
             activity.loadTarget.removeChild(activity.layout.point);
             delete appRunStack[name];
@@ -254,11 +304,11 @@ var objectManager = APP = ((function() {
          * 定义一个activity或者是model
          * @param config
          */
-        define: function(config) {
+        define: function (config) {
             if (config.name) {
+                if (!window[config.type]) window[config.type] = null;
                 this.storeActivtyConfig(config);
-                var temp = this.getActivityInf(config.name);
-                if (!config.type) config.type = JActivity;
+                // var temp = this.getActivityInf(config.name);
             }
         },
         /**
@@ -268,7 +318,7 @@ var objectManager = APP = ((function() {
          * @param fn
          * @returns {{then: then}}
          */
-        initLoad: function(name, url, fn) {
+        initLoad: function (name, url, fn) {
 
         },
 
@@ -279,15 +329,27 @@ var objectManager = APP = ((function() {
          * @param fn
          * @returns {{then: then}}
          */
-        loadManifest: function(name, url) {
+        loadManifest: function (name, url) {
             var loadName = name || new Date().getTime();
             var pArr = [];
-            return loadText(url).then(function(json) {
+            return loadText(url).then(function (json) {
                 var data = eval("(" + json + ")");
+                if (data.name)
+                    document.getElementsByTagName('title')[0].innerHTML = data.name || "未命名";
+
+                if (data.icon) {
+                    var iconlink = document.createElement('link');
+                    iconlink.href = data.icon.url;
+                    iconlink.type = "image/x-icon";
+                    iconlink.rel = "icon";
+                    // <link href="http://115.28.213.102/icon/favicon.ico" type="image/x-icon" rel="icon">
+                    head.appendChild(iconlink);
+                }
                 // appInf = data;
                 var activityArray = data["activity"];
-                var cssArr = data["CSS"];
+                var cssArr = data["CSS"] || data["css"];
                 var scriptArr = data["script"];
+                var layout = data["layout"]; //  当前的布局文件
 
                 appInf[loadName] = [];
                 // 遍历处理Activity的数据
@@ -299,21 +361,46 @@ var objectManager = APP = ((function() {
                     appInf.activity[activityArray[k].name] = temp;
                     appInf[loadName][activityArray[k].name] = temp;
                 }
+                pArr.push(APP.loadLayoutArr(layout));
+                if (scriptArr) {
+                    return loadScriptArr(scriptArr).then(function () {
+                        pArr.push(preImgCacheArr(data.preImage));
+                        pArr.push(APP.loadActivityArray(loadName));
+                        !cssArr || pArr.push(loadCSSArr(cssArr));
+                        // !scriptArr || pArr.push(loadScriptArr(scriptArr));
+                        return Promise.all(pArr);
+                    });
+                } else {
+                    pArr.push(preImgCacheArr(data.preImage));
+                    pArr.push(APP.loadActivityArray(loadName));
+                    !cssArr || pArr.push(loadCSSArr(cssArr));
+                    // !scriptArr || pArr.push(loadScriptArr(scriptArr));
+                    return Promise.all(pArr);
+                }
 
-                pArr.push(APP.loadActivityArray(loadName));
-                !cssArr || pArr.push(loadCSSArr(cssArr));
-                !scriptArr || pArr.push(loadScriptArr(scriptArr));
-                return Promise.all(pArr);
             });
         },
-        preCache:function(url){
-          var pArr = [];
-            return loadText(url).then(function(json){
+        preCache: function (url) {
+            var pArr = [];
+            return loadText(url).then(function (json) {
                 var data = eval("(" + json + ")");
                 var imgArr = data.img;
                 pArr.push(APP.preImgCacheArr(imgArr));
                 return Promise.all(pArr);
             })
+        },
+        loadLayoutArr: function (urlArr) {
+            if (!urlArr || urlArr.length < 1) {
+                return Promise.resolve();
+            }
+            var pArr = [];
+            for (var i = 0; i < urlArr.length; i++) {
+                pArr.push(loadLayout(urlArr[i]));
+            }
+            return Promise.all(pArr);
+        },
+        getAppLayout:function(){
+            return appInf.layout;
         }
     };
 })());

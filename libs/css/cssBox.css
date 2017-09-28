@@ -1,9 +1,4 @@
-﻿
-html{
-	font-family:"Microsoft YaHei",Tahoma,Arial,"Helvetica Neue","Hiragino Sans GB",Simsun,sans-self !important;
-	/*font-family:Tahoma,Arial,Roboto,”Droid Sans”,”Helvetica Neue”,”Droid Sans Fallback”,”Heiti SC”,sans-self;*/
-}
-*,html,body,header,section,footer,div,ul,ol,li,img,a,span,em,del,legend,center,strong,var,fieldset,form,label,dl,dt,dd,cite,input,time,mark,code,figcaption,figure,textarea,h1,h2,h3,h4,h5,h6,p{
+﻿*,html,body,header,section,footer,div,ul,ol,li,img,a,span,em,del,legend,center,strong,var,fieldset,form,label,dl,dt,dd,cite,input,time,mark,code,figcaption,figure,textarea,h1,h2,h3,h4,h5,h6,p{
 	margin:0;
 	border:0;
 	padding:0;
@@ -43,6 +38,7 @@ html,body {
 	padding: 0;
 	top:0px;
 	left:0px;
+	display: none;
 }
 viewport {
     display: block;
@@ -63,7 +59,7 @@ z-index: -1;
 	padding: 0;
 	top:0px;
 	left:0px;
-	display: none;
+	/*display: none;*/
 	 background-color: #fff;
 }
 
