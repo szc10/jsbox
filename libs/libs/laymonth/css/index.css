@@ -1,0 +1,67 @@
+*{
+	margin:0;
+	padding:0;
+}
+.header{
+	width:140px;
+	height:25px;
+	border:1px solid #999;
+	margin:5px auto 0px;
+}
+.header div{
+   width:20px;
+   height:25px;
+   background:#ccc;
+   color:#999;
+   line-height: 25px;
+   text-align: center;
+   box-sizing: border-box;
+   cursor: pointer;
+}
+.header .content{
+	width:100px;
+	background:#fff;
+	height:25px;
+	float: left;
+}
+.left{
+	float: left;
+	border-right:1px solid #999;
+}
+.right{
+	float:right;
+	border-left:1px solid #999;
+}
+ul{
+	list-style: none;
+}
+#time_controller ul{
+   width:140px;
+   height:132px;
+   border:1px solid #999;
+   margin:5px auto 0;
+}
+#time_controller ul li{
+	width:50px;
+	height:18px;
+	float: left;
+	text-align: center;
+	line-height: 18px;
+	padding:2px 10px;
+	cursor: pointer;
+}
+#time_controller ul li:hover{
+	background:#eee;
+}
+#time_controller .button_group{
+	float: right;
+	margin-right:6px;
+}
+#time_controller button{
+	width: 50px;
+	height:25px;
+	margin-top: 5px;
+}
+.on{
+	background:#ccc;
+}
